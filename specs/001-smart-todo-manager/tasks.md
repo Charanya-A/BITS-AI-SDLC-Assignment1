@@ -22,7 +22,7 @@
 - [ ] T002 Initialize the Node.js 24 LTS backend runtime in `backend/package.json` with the required Express.js runtime, JSON file persistence support, and test tooling for unit/API validation
 - [ ] T003 [P] Initialize the React + Vite frontend in `frontend/package.json`, `frontend/index.html`, and `frontend/vite.config.js` to match the approved plan and technology stack
 - [ ] T004 [P] Configure shared lint and test scripts in `backend/package.json` and `frontend/package.json` for syntax checks, unit tests, API tests, and frontend component tests
-- [ ] T005 Create the evidence directory structure for `evidence/initial-generation/`, `evidence/final-generation/`, and `harness-log.md` inside the approved project structure after T001 so validation output can be preserved and reviewed
+- [ ] T005 Create the evidence directory structure for `evidence/initial-generation/`, `evidence/final-generation/`, and `harness-log.md` inside the approved project structure after T001 so validation output can be preserved and reviewed; this task depends on T001 and must be completed before any harness evidence or repair sequence begins
 
 ---
 
@@ -199,7 +199,7 @@
 
 ### Implementation for User Story 7
 
-- [ ] T061 [US7] Implement the status transition gate in `backend/src/services/validationService.js` to determine whether a requested status change is allowed, and orchestrate the update and persistence in `backend/src/services/taskService.js`; do not duplicate state-machine validation in both files
+- [ ] T061 [US7] Implement the status transition gate in `backend/src/services/validationService.js` to determine whether a requested status change is allowed; `backend/src/services/taskService.js` orchestrates the status update and persistence, with no duplicate state-machine validation in both files
 - [ ] T062 [US7] Add the dedicated status endpoint in `backend/src/routes/tasks.js` and `backend/src/controllers/taskController.js` for `PATCH /api/tasks/:id/status` with `200` on success and `400` / `404` / `409` on invalid inputs or invalid transitions
 - [ ] T063 [US7] Implement status controls in `frontend/src/components/TaskStatus.jsx` and `frontend/src/pages/TaskDashboard.jsx` to display `PENDING`, `IN_PROGRESS`, and `COMPLETED`, update the task status using the dedicated backend endpoint, and prevent invalid transitions from mutating the UI state
 - [ ] T064 [US7] Ensure the general `PATCH /api/tasks/:id` path rejects any status field, and validate that the `INVALID_STATUS_TRANSITION` response schema is used exactly as defined in `specs/001-smart-todo-manager/spec.md` and `task-api.yaml` with no data mutation on rejected transitions
@@ -218,7 +218,7 @@
 - [ ] T068 Run the API and contract-test gate against the backend API tests and `specs/001-smart-todo-manager/contracts/task-api.yaml`, store the exact command output and any mismatches in `harness-log.md`, and compare the results against the approved response and error contracts
 - [ ] T069 Run the dependency-vulnerability audit gate using `npm audit --audit-level=high` in the backend and frontend package directories, record the exact output and any findings in `harness-log.md`, and do not claim the audit passed without actual successful command execution
 - [ ] T070 Run the required SAST/static-analysis gate using a genuine executable security tool, with a prerequisite such as `npm install -g semgrep` or `python -m pip install semgrep`, followed by `semgrep scan --config p/javascript --error backend/src frontend/src`, and record the exact output and findings in `harness-log.md`; do not treat ESLint or `npm audit` alone as proof that SAST passed
-- [ ] T071 Feed the actual failure evidence observed in T066-T070 to the coding agent for repair, preserving the genuine command output, expected results, actual results, and any stack output without inventing or forcing a failure; record honestly whether a gate passed or failed and do not fabricate a repair cycle
+- [ ] T071 Feed the actual failure evidence observed in T066-T070 to the coding agent for repair, preserving the genuine command output, expected results, actual results, and any stack output without inventing or forcing a failure; record honestly whether a gate passed or failed and do not fabricate a repair cycle; the coding agent must repair real failures shown by the validation evidence, not a synthetic or forced failure
 - [ ] T072 Capture the corrected final implementation snapshot in `evidence/final-generation/` after repairs, preserving the final state separately from the initial-generation evidence and keeping the initial snapshot intact
 - [ ] T073 Rerun the same syntax/lint, unit, API/contract, dependency-audit, and SAST gates after repair using the same criteria and record the exact post-repair outputs in `harness-log.md`
 - [ ] T074 Record the final ACCEPT or REJECT decision in `harness-log.md` after human review, ensuring tests, acceptance criteria, and validation gates remain unchanged and no checks are weakened, removed, or disabled to obtain a pass
@@ -276,10 +276,10 @@
 Task: "Add failing API tests in backend/tests/api/tasks-create.api.test.js"
 Task: "Add frontend component tests in frontend/tests/unit/TaskForm.test.jsx"
 
-# Implement create logic in parallel once the shared validation and storage services exist:
+# Once the shared validation and storage services exist, implement create logic with validation centralized in validationService.js and orchestration in taskService.js:
 Task: "Implement create-task validation in backend/src/services/validationService.js"
-Task: "Add the POST route in backend/src/routes/tasks.js"
 Task: "Implement create-task orchestration in backend/src/services/taskService.js"
+Task: "Add the POST route in backend/src/routes/tasks.js"
 Task: "Implement the create form in frontend/src/components/TaskForm.jsx"
 ```
 
@@ -299,7 +299,7 @@ Task: "Implement the create form in frontend/src/components/TaskForm.jsx"
 
 1. Deliver the backend persistence, validation, and create story first.
 2. Add retrieval and update flows next using the same shared validation and storage services.
-3. Extend the frontend within each relevant story as the backend API becomes available, keeping the UI aligned with the approved task-management features.
+3. Extend the frontend incrementally within each relevant user story as the backend API becomes available, keeping the UI aligned with the approved task-management features.
 4. Add delete, tag filtering, sorting, and status transitions as related increments within their user stories, then finish with cross-cutting validation, security review, and harness evidence capture.
 
 ## Suggested MVP Scope
