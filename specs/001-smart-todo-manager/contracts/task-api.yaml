@@ -1,0 +1,356 @@
+openapi: 3.0.3
+info:
+  title: Smart Todo & Task Manager API
+  version: 1.0.0
+  description: REST API contract for the Smart Todo & Task Manager assignment.
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/tasks:
+    get:
+      summary: List tasks
+      description: Returns all tasks. Supports optional tag filtering and deterministic priority sorting.
+      parameters:
+        - in: query
+          name: tag
+          required: false
+          schema:
+            type: string
+          description: Case-insensitive tag filter; tasks without a matching tag are omitted.
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+            enum: [priority]
+          description: If present, tasks are ordered by priority as HIGH, MEDIUM, LOW; ties break by createdAt then id.
+      responses:
+        '200':
+          description: Returns all tasks or tag-filtered tasks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+        '400':
+          description: Invalid request parameters or malformed query values.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Runtime persistence failure while reading the JSON store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskRequest'
+      responses:
+        '201':
+          description: Task created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: VALIDATION_ERROR for invalid field values or MALFORMED_REQUEST for invalid JSON syntax / malformed body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Runtime persistence failure while writing the JSON store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/tasks/{id}:
+    get:
+      summary: Fetch a task by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          description: Task not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Runtime persistence failure while reading the JSON store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a task by allowed fields only
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskRequest'
+      responses:
+        '200':
+          description: Task updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: VALIDATION_ERROR for invalid field values, unsupported fields, empty body, or MALFORMED_REQUEST for invalid JSON syntax / malformed body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Runtime persistence failure while updating the JSON store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a task by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Task deleted successfully. No response body is returned.
+        '404':
+          description: Task not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Runtime persistence failure while writing the JSON store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/tasks/{id}/status:
+    patch:
+      summary: Update task status using the dedicated status transition endpoint
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusUpdateRequest'
+      responses:
+        '200':
+          description: Status changed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: VALIDATION_ERROR for invalid status values or MALFORMED_REQUEST for invalid JSON syntax / malformed body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Invalid or repeated status transition. Response code is INVALID_STATUS_TRANSITION.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Runtime persistence failure while updating the JSON store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Task:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - priority
+        - tags
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable unique task identifier. Must be a server-generated UUID v4.
+          pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+        title:
+          type: string
+          description: Required title after trimming; 1-120 characters.
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          description: Required field; may be empty, maximum 2000 characters.
+          maxLength: 2000
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+        tags:
+          type: array
+          description: Optional tag list; defaults to an empty array when omitted.
+          items:
+            type: string
+            minLength: 1
+          default: []
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+        createdAt:
+          type: string
+          format: date-time
+          description: Server-generated UTC ISO 8601 timestamp.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Server-generated UTC ISO 8601 timestamp; updated on each successful write.
+    CreateTaskRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+        - description
+        - priority
+      properties:
+        title:
+          type: string
+          description: Required string; must be non-empty after trimming and 1-120 characters.
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          description: Required string; empty string is allowed, maximum 2000 characters.
+          maxLength: 2000
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+        tags:
+          type: array
+          description: Optional array of non-empty trimmed tag strings. Defaults to an empty array when omitted.
+          items:
+            type: string
+            minLength: 1
+          default: []
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+          default: PENDING
+          description: Optional; defaults to PENDING when omitted.
+    UpdateTaskRequest:
+      type: object
+      description: Non-empty object containing only title, description, priority, and/or tags. status is not allowed through this endpoint; id, createdAt, updatedAt are rejected.
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 2000
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+        tags:
+          type: array
+          items:
+            type: string
+            minLength: 1
+    StatusUpdateRequest:
+      type: object
+      required:
+        - status
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED]
+          description: Only the dedicated status endpoint accepts this field; transitions are restricted to PENDING -> IN_PROGRESS and IN_PROGRESS -> COMPLETED.
+    TaskResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
+    TaskListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              enum: [VALIDATION_ERROR, MALFORMED_REQUEST, NOT_FOUND, INVALID_STATUS_TRANSITION, PERSISTENCE_ERROR]
+            message:
+              type: string
+            details:
+              type: object
+              nullable: true
