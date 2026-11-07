@@ -1,0 +1,331 @@
+﻿PART 1A - BEFORE AND AFTER TEST REPAIR COMPARISONS
+
+diff --git "a/.\\evidence\\pre-repair-backup\\storageService.test.js" "b/.\\backend\\tests\\unit\\storageService.test.js"
+index 1a5096c..714343b 100644
+--- "a/.\\evidence\\pre-repair-backup\\storageService.test.js"
++++ "b/.\\backend\\tests\\unit\\storageService.test.js"
+@@ -1,40 +1,79 @@
++
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import fs from 'node:fs/promises';
+-import path from 'node:path';
+ import os from 'node:os';
+-import { initializeStore, writeStore, STORE_PATH } from '../../src/services/storageService.js';
++import path from 'node:path';
++import {
++  initializeStore,
++  writeStore,
++  safeReadStore,
++} from '../../src/services/storageService.js';
++
++async function withTempStore(fn) {
++  const directory = await fs.mkdtemp(
++    path.join(os.tmpdir(), 'todo-store-')
++  );
++  const storePath = path.join(directory, 'tasks.json');
++  const previousPath = globalThis.__STORE_PATH__;
++
++  globalThis.__STORE_PATH__ = storePath;
+
+-async function withTempRoot(fn) {
+-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'todo-store-'));
+-  const original = STORE_PATH;
+-  globalThis.__STORE_PATH__ = STORE_PATH;
+-  // override via module mutation not supported; this test is retained for design intent
+   try {
+-    await fn(dir);
++    await fn(storePath);
+   } finally {
+-    await fs.rm(dir, { recursive: true, force: true });
++    if (previousPath === undefined) {
++      delete globalThis.__STORE_PATH__;
++    } else {
++      globalThis.__STORE_PATH__ = previousPath;
++    }
++
++    await fs.rm(directory, { recursive: true, force: true });
+   }
+ }
+
+ test('initializeStore creates an empty array when the file is missing', async () => {
+-  const target = path.join(process.cwd(), 'tmp-store-missing.json');
+-  const original = STORE_PATH;
+-  globalThis.__STORE_PATH__ = STORE_PATH;
+-  try {
++  await withTempStore(async (storePath) => {
+     const tasks = await initializeStore();
++
+     assert.deepEqual(tasks, []);
+-  } finally {
+-    // kept intentionally simple
+-  }
++    assert.equal(await fs.readFile(storePath, 'utf8'), '[]');
++  });
+ });
+
+ test('initializeStore rejects malformed JSON without overwriting the existing file', async () => {
+-  const file = path.join(process.cwd(), 'tmp-malformed.json');
+-  await fs.writeFile(file, '{ bad json', 'utf8');
+-  try {
+-    await assert.rejects(async () => initializeStore(), /malformed or unreadable/i);
+-  } finally {
+-    await fs.unlink(file).catch(() => {});
+-  }
++  await withTempStore(async (storePath) => {
++    const malformedContent = '{ bad json';
++    await fs.writeFile(storePath, malformedContent, 'utf8');
++
++    await assert.rejects(
++      initializeStore(),
++      /malformed or unreadable/i
++    );
++
++    const existingContent = await fs.readFile(storePath, 'utf8');
++    assert.equal(existingContent, malformedContent);
++  });
++});
++
++test('writeStore persists tasks and safeReadStore returns the persisted tasks', async () => {
++  await withTempStore(async () => {
++    const tasks = [
++      {
++        id: 'test-task-1',
++        title: 'Test task',
++        description: '',
++        priority: 'HIGH',
++        tags: ['college'],
++        status: 'PENDING',
++        createdAt: '2026-11-05T12:00:00.000Z',
++        updatedAt: '2026-11-05T12:00:00.000Z',
++      },
++    ];
++
++    await writeStore(tasks);
++
++    const storedTasks = await safeReadStore();
++    assert.deepEqual(storedTasks, tasks);
++  });
+ });
+
+
+API TEST ISOLATION REPAIR
+
+diff --git "a/.\\evidence\\pre-repair-backup\\tasks.api.test.js" "b/.\\backend\\tests\\api\\tasks.api.test.js"
+index 036eff5..bb18c21 100644
+--- "a/.\\evidence\\pre-repair-backup\\tasks.api.test.js"
++++ "b/.\\backend\\tests\\api\\tasks.api.test.js"
+@@ -1,61 +1,190 @@
++
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import request from 'supertest';
+ import fs from 'node:fs/promises';
++import os from 'node:os';
+ import path from 'node:path';
+ import app from '../../src/app.js';
+-import { STORE_PATH } from '../../src/services/storageService.js';
++
++let temporaryDirectory;
++let testStorePath;
++let previousStorePath;
+
+ async function resetStore() {
+-  await fs.mkdir(path.dirname(STORE_PATH), { recursive: true });
+-  await fs.writeFile(STORE_PATH, '[]', 'utf8');
++  await fs.writeFile(testStorePath, '[]', 'utf8');
+ }
+
++test.before(async () => {
++  temporaryDirectory = await fs.mkdtemp(
++    path.join(os.tmpdir(), 'todo-api-')
++  );
++
++  testStorePath = path.join(temporaryDirectory, 'tasks.json');
++  previousStorePath = globalThis.__STORE_PATH__;
++
++  globalThis.__STORE_PATH__ = testStorePath;
++
++  await resetStore();
++});
++
+ test.beforeEach(async () => {
+   await resetStore();
+ });
+
++test.after(async () => {
++  if (previousStorePath === undefined) {
++    delete globalThis.__STORE_PATH__;
++  } else {
++    globalThis.__STORE_PATH__ = previousStorePath;
++  }
++
++  await fs.rm(temporaryDirectory, { recursive: true, force: true });
++});
++
+ test('POST /api/tasks creates a task with generated UUID and timestamp metadata', async () => {
+   const response = await request(app)
+     .post('/api/tasks')
+-    .send({ title: 'Write report', description: 'Quarterly summary', priority: 'HIGH', tags: ['college', 'work'] });
++    .send({
++      title: 'Write report',
++      description: 'Quarterly summary',
++      priority: 'HIGH',
++      tags: ['college', 'work'],
++    });
+
+   assert.equal(response.status, 201);
+   assert.equal(response.body.data.title, 'Write report');
+   assert.equal(response.body.data.priority, 'HIGH');
+   assert.equal(response.body.data.status, 'PENDING');
+-  assert.match(response.body.data.id, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
++
++  assert.match(
++    response.body.data.id,
++    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
++  );
++
+   assert.ok(response.body.data.createdAt);
+   assert.ok(response.body.data.updatedAt);
+ });
+
+ test('POST /api/tasks rejects invalid input without changing storage', async () => {
+-  const before = JSON.parse(await fs.readFile(STORE_PATH, 'utf8'));
++  const before = JSON.parse(await fs.readFile(testStorePath, 'utf8'));
++
+   const response = await request(app)
+     .post('/api/tasks')
+-    .send({ title: '', description: 'bad', priority: 'URGENT' });
++    .send({
++      title: '',
++      description: 'bad',
++      priority: 'URGENT',
++    });
+
+   assert.equal(response.status, 400);
+   assert.equal(response.body.error.code, 'VALIDATION_ERROR');
+
+-  const after = JSON.parse(await fs.readFile(STORE_PATH, 'utf8'));
++  const after = JSON.parse(await fs.readFile(testStorePath, 'utf8'));
+   assert.deepEqual(after, before);
+ });
+
+ test('GET /api/tasks supports tag filtering and priority sorting', async () => {
+-  await request(app).post('/api/tasks').send({ title: 'Alpha', description: '', priority: 'LOW', tags: ['college'] });
+-  await request(app).post('/api/tasks').send({ title: 'Bravo', description: '', priority: 'HIGH', tags: ['college'] });
+-  await request(app).post('/api/tasks').send({ title: 'Charlie', description: '', priority: 'MEDIUM', tags: ['personal'] });
++  await request(app)
++    .post('/api/tasks')
++    .send({ title: 'Alpha', description: '', priority: 'LOW', tags: ['college'] });
++
++  await request(app)
++    .post('/api/tasks')
++    .send({ title: 'Bravo', description: '', priority: 'HIGH', tags: ['college'] });
++
++  await request(app)
++    .post('/api/tasks')
++    .send({ title: 'Charlie', description: '', priority: 'MEDIUM', tags: ['personal'] });
++
++  const response = await request(app)
++    .get('/api/tasks?tag=college&sort=priority');
++
++  assert.equal(response.status, 200);
++  assert.deepEqual(
++    response.body.data.map((task) => task.title),
++    ['Bravo', 'Alpha']
++  );
++});
++test('PATCH /api/tasks/:id updates allowed fields and preserves immutable metadata', async () => {
++  const created = await request(app)
++    .post('/api/tasks')
++    .send({
++      title: 'Original title',
++      description: 'Original description',
++      priority: 'LOW',
++      tags: ['college'],
++    });
++
++  assert.equal(created.status, 201);
+
+-  const response = await request(app).get('/api/tasks?tag=college&sort=priority');
++  const originalTask = created.body.data;
++
++  // Ensure updatedAt can be distinguished from createdAt.
++  await new Promise((resolve) => setTimeout(resolve, 10));
++
++  const response = await request(app)
++    .patch(`/api/tasks/${originalTask.id}`)
++    .send({
++      title: 'Updated title',
++      description: 'Updated description',
++      priority: 'HIGH',
++      tags: ['college', 'updated'],
++    });
+
+   assert.equal(response.status, 200);
+-  assert.deepEqual(response.body.data.map((task) => task.title), ['Bravo', 'Alpha']);
++  assert.equal(response.body.data.id, originalTask.id);
++  assert.equal(response.body.data.title, 'Updated title');
++  assert.equal(response.body.data.description, 'Updated description');
++  assert.equal(response.body.data.priority, 'HIGH');
++  assert.deepEqual(response.body.data.tags, ['college', 'updated']);
++  assert.equal(response.body.data.status, 'PENDING');
++  assert.equal(response.body.data.createdAt, originalTask.createdAt);
++  assert.notEqual(response.body.data.updatedAt, originalTask.updatedAt);
++
++  const storedTasks = JSON.parse(
++    await fs.readFile(testStorePath, 'utf8')
++  );
++
++  assert.deepEqual(storedTasks[0], response.body.data);
++});
++
++test('PATCH /api/tasks/:id rejects immutable fields without changing storage', async () => {
++  const created = await request(app)
++    .post('/api/tasks')
++    .send({
++      title: 'Protected task',
++      description: '',
++      priority: 'MEDIUM',
++    });
++
++  const originalTask = created.body.data;
++  const before = JSON.parse(await fs.readFile(testStorePath, 'utf8'));
++
++  const response = await request(app)
++    .patch(`/api/tasks/${originalTask.id}`)
++    .send({
++      title: 'Attempted change',
++      status: 'COMPLETED',
++    });
++
++  assert.equal(response.status, 400);
++  assert.equal(response.body.error.code, 'VALIDATION_ERROR');
++
++  const after = JSON.parse(await fs.readFile(testStorePath, 'utf8'));
++  assert.deepEqual(after, before);
+ });
+
+ test('PATCH /api/tasks/:id/status rejects invalid transitions without modifying stored task', async () => {
+-  const created = await request(app).post('/api/tasks').send({ title: 'Status task', description: '', priority: 'MEDIUM' });
+-  const before = JSON.parse(await fs.readFile(STORE_PATH, 'utf8'));
++  const created = await request(app)
++    .post('/api/tasks')
++    .send({
++      title: 'Status task',
++      description: '',
++      priority: 'MEDIUM',
++    });
++
++  const before = JSON.parse(await fs.readFile(testStorePath, 'utf8'));
+
+   const response = await request(app)
+     .patch(`/api/tasks/${created.body.data.id}/status`)
+@@ -64,6 +193,6 @@ test('PATCH /api/tasks/:id/status rejects invalid transitions without modifying
+   assert.equal(response.status, 409);
+   assert.equal(response.body.error.code, 'INVALID_STATUS_TRANSITION');
+
+-  const after = JSON.parse(await fs.readFile(STORE_PATH, 'utf8'));
++  const after = JSON.parse(await fs.readFile(testStorePath, 'utf8'));
+   assert.equal(after[0].status, before[0].status);
+ });
