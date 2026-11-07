@@ -1,0 +1,332 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261106135814
+Username: CHARANYA_A\cherr
+RunAs User: CHARANYA_A\cherr
+Configuration Name: 
+Machine: CHARANYA_A (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\cherr\AppData\Local\Programs\Microsoft VS Code\6bab64e2d1\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 31280
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+
+========== BACKEND JAVASCRIPT SYNTAX ==========
+BACKEND JAVASCRIPT SYNTAX : PASS (exit code 0)
+
+========== BACKEND UNIT AND API TESTS ==========
+
+> smart-todo-backend@1.0.0 test
+> node --test
+
+Γ£ö POST /api/tasks creates a task with generated UUID and timestamp metadata (59.7746ms)
+Γ£ö POST /api/tasks rejects invalid input without changing storage (25.4776ms)
+Γ£ö GET /api/tasks supports tag filtering and priority sorting (51.6698ms)
+Γ£ö PATCH /api/tasks/:id updates allowed fields and preserves immutable metadata (47.6149ms)
+Γ£ö PATCH /api/tasks/:id rejects immutable fields without changing storage (36.8412ms)
+Γ£ö PATCH /api/tasks/:id/status rejects invalid transitions without modifying stored task (22.6977ms)
+Γ£ö sortTasks orders HIGH before MEDIUM before LOW and ties by createdAt then id (2.5179ms)
+Γ£ö sortTasks does not mutate the original array (0.3129ms)
+Γ£ö initializeStore creates an empty array when the file is missing (15.7495ms)
+Γ£ö initializeStore rejects malformed JSON without overwriting the existing file (9.444ms)
+Γ£ö writeStore persists tasks and safeReadStore returns the persisted tasks (8.3912ms)
+Γ£ö validateCreateTaskInput trims title and accepts default status and tags (3.0626ms)
+Γ£ö validateCreateTaskInput rejects invalid title and priority (1.08ms)
+Γ£ö validateUpdateTaskInput accepts only supported fields and rejects empty bodies (0.6574ms)
+Γ£ö validateStatusBody and validateStatusTransition enforce the approved transition rules (0.6146ms)
+Γä╣ tests 15
+Γä╣ suites 0
+Γä╣ pass 15
+Γä╣ fail 0
+Γä╣ cancelled 0
+Γä╣ skipped 0
+Γä╣ todo 0
+Γä╣ duration_ms 625.2792
+BACKEND UNIT AND API TESTS : PASS (exit code 0)
+
+========== FRONTEND TESTS ==========
+
+> smart-todo-frontend@1.0.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90mD:/BITS/1st sem/AI-SDLC/Assignment1/Part-1A/frontend[39m
+
+ [32mΓ£ô[39m tests/unit/TaskForm.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 341[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 13:58:17
+[2m   Duration [22m 1.38s[2m (transform 85ms, setup 0ms, import 311ms, tests 341ms, environment 562ms)[22m
+
+FRONTEND TESTS : PASS (exit code 0)
+
+========== FRONTEND LINT ==========
+
+> smart-todo-frontend@1.0.0 lint
+> eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0
+
+FRONTEND LINT : PASS (exit code 0)
+
+========== BACKEND LINT ==========
+eslint.cmd : Warning: React version was set to "detect" in eslint-plugin-react settings, but the "react" package is not 
+installed. Assuming latest React version for linting.
+At D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A\.harness\run-harness.ps1:115 char:13
++             & .\node_modules\.bin\eslint.cmd --config .\.eslintrc.cjs ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Warning: React ...on for linting.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+Warning: React version was set to "detect" in eslint-plugin-react settings, but the "react" package is not installed. Assuming latest React version for linting.
+BACKEND LINT : PASS (exit code 0)
+
+========== FRONTEND PRODUCTION BUILD ==========
+
+> smart-todo-frontend@1.0.0 build
+> vite build
+
+[36mvite v6.4.5 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 28 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                 [39m[1m[2m  0.42 kB[22m[1m[22m[2m Γöé gzip:  0.28 kB[22m
+[2mdist/[22m[35massets/index-jccLb0vT.css  [39m[1m[2m  1.58 kB[22m[1m[22m[2m Γöé gzip:  0.71 kB[22m
+[2mdist/[22m[36massets/index-DoUCt2HP.js   [39m[1m[2m149.05 kB[22m[1m[22m[2m Γöé gzip: 48.01 kB[22m
+[32mΓ£ô built in 577ms[39m
+FRONTEND PRODUCTION BUILD : PASS (exit code 0)
+
+========== BACKEND DEPENDENCY AUDIT ==========
+found 0 vulnerabilities
+BACKEND DEPENDENCY AUDIT : PASS (exit code 0)
+
+========== FRONTEND DEPENDENCY AUDIT ==========
+found 0 vulnerabilities
+FRONTEND DEPENDENCY AUDIT : PASS (exit code 0)
+
+========== SEMGREP SAST ==========
+semgrep.exe :                
+At D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A\.harness\run-harness.ps1:155 char:13
++             & semgrep scan --config p/javascript --error --no-git-ign ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (               :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Scan Status Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+  Scanning 15 files with 74 Code rules:
+  Scanning 13 files with 68 js rules.
+
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Scan Summary Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+Γ£à Scan completed successfully.
+ ΓÇó Findings: 0 (0 blocking)
+ ΓÇó Rules run: 68
+ ΓÇó Targets scanned: 13
+ ΓÇó Parsed lines: ~100.0%
+ ΓÇó No ignore information available
+Ran 68 rules on 13 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)
+
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/
+
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Scan Status Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+  Scanning 15 files with 74 Code rules:
+  Scanning 13 files with 68 js rules.
+
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Scan Summary Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+Γ£à Scan completed successfully.
+ ΓÇó Findings: 0 (0 blocking)
+ ΓÇó Rules run: 68
+ ΓÇó Targets scanned: 13
+ ΓÇó Parsed lines: ~100.0%
+ ΓÇó No ignore information available
+Ran 68 rules on 13 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)
+System.Management.Automation.RemoteException
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/
+SEMGREP SAST : PASS (exit code 0)
+
+========== OPENAPI CONTRACT VALIDATION ==========
+node.exe : No configurations were provided -- using built in [34mrecommended[39m configuration by default.
+At line:1 char:1
++ & "D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A/node.exe" "D:\BITS\1st ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (No configuratio...ion by default.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[90mvalidating specs\001-smart-todo-manager\contracts\task-api.yaml...
+[39m[90mspecs\001-smart-todo-manager\contracts\task-api.yaml: validated in 41ms
+
+[39m[32mWoohoo! Your API description is valid. ≡ƒÄë
+[39m[33mYou have 8 warnings.
+[39m
+No configurations were provided -- using built in [34mrecommended[39m configuration by default.
+System.Management.Automation.RemoteException
+[90mvalidating specs\001-smart-todo-manager\contracts\task-api.yaml...
+[1] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:2:1[39m[49m [90mat #/info[39m
+
+Info object should contain `license` field.
+
+[90m1 |[39m [90mopenapi: 3.0.3[39m
+[90m2 |[39m [31minfo[39m:
+[90m3 |[39m   [90mtitle: Smart Todo & Task Manager API[39m
+[90m4 |[39m   [90mversion: 1.0.0[39m
+
+Warning was generated by the [34minfo-license[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/info-license[39m
+
+
+[2] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:7:10[39m[49m [90mat #/servers/0/url[39m
+
+Server `url` should not point to example.com or localhost.
+
+[90m5 |[39m   [90mdescription: REST API contract for the Smart Todo & Task Manager assignment.[39m
+[90m6 |[39m [90mservers:[39m
+[90m7 |[39m   - url: [31mhttp://localhost:3000[39m
+[90m8 |[39m
+[90m9 |[39m [90msecurity: [][39m
+
+Warning was generated by the [34mno-server-example.com[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/no-server-example-com[39m
+
+
+[3] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:13:5[39m[49m [90mat #/paths/~1api~1tasks/get/operationId[39m
+
+Operation object should contain `operationId` field.
+
+[90m11 |[39m [90mpaths:[39m
+[90m12 |[39m   [90m/api/tasks:[39m
+[90m13 |[39m     [31mget[39m:
+[90m14 |[39m       [90msummary: List tasks[39m
+[90m15 |[39m       [90mdescription: Returns all tasks. Supports optional tag filtering and deterministic priority sorting.[39m
+
+Warning was generated by the [34moperation-operationId[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/operation-operationId[39m
+
+
+[4] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:49:5[39m[49m [90mat #/paths/~1api~1tasks/post/operationId[39m
+
+Operation object should contain `operationId` field.
+
+[90m47 |[39m           [90mschema:[39m
+[90m48 |[39m             [90m$ref: '#/components/schemas/ErrorResponse'[39m
+[90m49 |[39m [31mpost[39m:
+[90m50 |[39m   [90msummary: Create a task[39m
+[90m51 |[39m   [90mrequestBody:[39m
+
+Warning was generated by the [34moperation-operationId[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/operation-operationId[39m
+
+
+[5] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:77:5[39m[49m [90mat #/paths/~1api~1tasks~1{id}/get/operationId[39m
+
+Operation object should contain `operationId` field.
+
+[90m75 |[39m               [90m$ref: '#/components/schemas/ErrorResponse'[39m
+[90m76 |[39m [90m/api/tasks/{id}:[39m
+[90m77 |[39m   [31mget[39m:
+[90m78 |[39m     [90msummary: Fetch a task by id[39m
+[90m79 |[39m     [90mparameters:[39m
+
+Warning was generated by the [34moperation-operationId[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/operation-operationId[39m
+
+
+[6] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:143:5[39m[49m [90mat #/paths/~1api~1tasks~1{id}/delete/operationId[39m
+
+Operation object should contain `operationId` field.
+
+[90m141 |[39m           [90mschema:[39m
+[90m142 |[39m             [90m$ref: '#/components/schemas/ErrorResponse'[39m
+[90m143 |[39m [31mdelete[39m:
+[90m144 |[39m   [90msummary: Delete a task by id[39m
+[90m145 |[39m   [90mparameters:[39m
+
+Warning was generated by the [34moperation-operationId[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/operation-operationId[39m
+
+
+[7] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:104:5[39m[49m [90mat #/paths/~1api~1tasks~1{id}/patch/operationId[39m
+
+Operation object should contain `operationId` field.
+
+[90m102 |[39m           [90mschema:[39m
+[90m103 |[39m             [90m$ref: '#/components/schemas/ErrorResponse'[39m
+[90m104 |[39m [31mpatch[39m:
+[90m105 |[39m   [90msummary: Update a task by allowed fields only[39m
+[90m106 |[39m   [90mparameters:[39m
+
+Warning was generated by the [34moperation-operationId[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/operation-operationId[39m
+
+
+[8] [43m[30mspecs\001-smart-todo-manager\contracts\task-api.yaml:167:5[39m[49m [90mat #/paths/~1api~1tasks~1{id}~1status/patch/operationId[39m
+
+Operation object should contain `operationId` field.
+
+[90m165 |[39m               [90m$ref: '#/components/schemas/ErrorResponse'[39m
+[90m166 |[39m [90m/api/tasks/{id}/status:[39m
+[90m167 |[39m   [31mpatch[39m:
+[90m168 |[39m     [90msummary: Update task status using the dedicated status transition endpoint[39m
+[90m169 |[39m     [90mparameters:[39m
+
+Warning was generated by the [34moperation-operationId[39m rule.
+
+Reference: [34mhttps://redocly.com/docs/cli/rules/oas/operation-operationId[39m
+
+
+[39m[90mspecs\001-smart-todo-manager\contracts\task-api.yaml: validated in 41ms
+System.Management.Automation.RemoteException
+[39m[32mWoohoo! Your API description is valid. ≡ƒÄë
+[39m[33mYou have 8 warnings.
+[39m
+OPENAPI CONTRACT VALIDATION : PASS (exit code 0)
+
+========== HARNESS SUMMARY ==========
+
+Gate                        Status ExitC
+                                     ode
+----                        ------ -----
+BACKEND JAVASCRIPT SYNTAX   PASS       0
+BACKEND UNIT AND API TESTS  PASS       0
+FRONTEND TESTS              PASS       0
+FRONTEND LINT               PASS       0
+BACKEND LINT                PASS       0
+FRONTEND PRODUCTION BUILD   PASS       0
+BACKEND DEPENDENCY AUDIT    PASS       0
+FRONTEND DEPENDENCY AUDIT   PASS       0
+SEMGREP SAST                PASS       0
+OPENAPI CONTRACT VALIDATION PASS       0
+
+
+Passed gates: 10
+Failed gates: 0
+Harness transcript: D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A\.harness\harness-run-20261106-135814.txt
+**********************
+Windows PowerShell transcript end
+End time: 20261106135833
+**********************

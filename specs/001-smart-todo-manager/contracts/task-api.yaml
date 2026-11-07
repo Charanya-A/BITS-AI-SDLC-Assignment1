@@ -5,6 +5,9 @@ info:
   description: REST API contract for the Smart Todo & Task Manager assignment.
 servers:
   - url: http://localhost:3000
+
+security: []
+
 paths:
   /api/tasks:
     get:

@@ -1,0 +1,155 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261106130546
+Username: CHARANYA_A\cherr
+RunAs User: CHARANYA_A\cherr
+Configuration Name: 
+Machine: CHARANYA_A (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\cherr\AppData\Local\Programs\Microsoft VS Code\a717861c07\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 2784
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is .\evidence\final-verification-transcript.txt
+]633;D;0]633;A]633;P;Cwd=D:\x5cBITS\x5c1st sem\x5cAI-SDLC\x5cAssignment1\x5cPart-1APS D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A> ]633;B
+PS>Write-Host "`n========== BACKEND TESTS =========="
+
+Push-Location .\backend
+npm test
+Write-Host "Backend test exit code: $LASTEXITCODE"
+Pop-Location
+
+Write-Host "`n========== FRONTEND TESTS =========="
+
+Push-Location .\frontend
+npm test -- --run
+Write-Host "Frontend test exit code: $LASTEXITCODE"
+Pop-Location
+
+========== BACKEND TESTS ==========
+
+Backend test exit code: 0
+
+========== FRONTEND TESTS ==========
+
+Frontend test exit code: 0
+]633;D;0]633;A]633;P;Cwd=D:\x5cBITS\x5c1st sem\x5cAI-SDLC\x5cAssignment1\x5cPart-1APS D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A> ]633;B
+PS>Write-Host "`n========== FRONTEND LINT =========="
+Push-Location .\frontend
+npm run lint
+Write-Host "Frontend lint exit code: $LASTEXITCODE"
+
+Write-Host "`n========== FRONTEND BUILD =========="
+npm run build
+Write-Host "Frontend build exit code: $LASTEXITCODE"
+
+Write-Host "`n========== FRONTEND DEPENDENCY AUDIT =========="
+npm audit --audit-level=high
+Write-Host "Frontend audit exit code: $LASTEXITCODE"
+Pop-Location
+
+Write-Host "`n========== BACKEND LINT =========="
+Push-Location .\frontend
+npx eslint --config .\.eslintrc.cjs --no-ignore ..\backend\src ..\backend\tests --max-warnings 0
+Write-Host "Backend lint exit code: $LASTEXITCODE"
+Pop-Location
+
+Write-Host "`n========== BACKEND DEPENDENCY AUDIT =========="
+Push-Location .\backend
+npm audit --audit-level=high
+Write-Host "Backend audit exit code: $LASTEXITCODE"
+Pop-Location
+
+========== FRONTEND LINT ==========
+
+Frontend lint exit code: 0
+
+========== FRONTEND BUILD ==========
+
+Frontend build exit code: 0
+
+========== FRONTEND DEPENDENCY AUDIT ==========
+
+Frontend audit exit code: 0
+
+========== BACKEND LINT ==========
+
+Backend lint exit code: 0
+
+========== BACKEND DEPENDENCY AUDIT ==========
+
+Backend audit exit code: 0
+]633;D;0]633;A]633;P;Cwd=D:\x5cBITS\x5c1st sem\x5cAI-SDLC\x5cAssignment1\x5cPart-1APS D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A> ]633;B
+PS>Write-Host "`n========== SEMGREP SAST =========="
+
+semgrep scan --config p/javascript --error --no-git-ignore .\backend\src .\frontend\src
+
+Write-Host "Semgrep exit code: $LASTEXITCODE"
+
+Write-Host "`n========== OPENAPI CONTRACT VALIDATION =========="
+
+npx --yes @redocly/cli lint .\specs\001-smart-todo-manager\contracts\task-api.yaml
+
+Write-Host "Redocly exit code: $LASTEXITCODE"
+
+========== SEMGREP SAST ==========
+
+Semgrep exit code: 0
+
+========== OPENAPI CONTRACT VALIDATION ==========
+
+Redocly exit code: 0
+]633;D;0]633;A]633;P;Cwd=D:\x5cBITS\x5c1st sem\x5cAI-SDLC\x5cAssignment1\x5cPart-1APS D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A> ]633;B
+PS>Write-Host "`n========== BACKEND JAVASCRIPT SYNTAX =========="
+
+Get-ChildItem .\backend\src, .\backend\tests -Recurse -Filter *.js |
+ForEach-Object {
+    node --check $_.FullName
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "SYNTAX FAILURE: $($_.FullName)" -ForegroundColor Red
+        exit 1
+    }
+}
+
+Write-Host "Backend JavaScript syntax check completed."
+Write-Host "Syntax check exit code: $LASTEXITCODE"
+
+========== BACKEND JAVASCRIPT SYNTAX ==========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backend JavaScript syntax check completed.
+Syntax check exit code: 0
+]633;D;0]633;A]633;P;Cwd=D:\x5cBITS\x5c1st sem\x5cAI-SDLC\x5cAssignment1\x5cPart-1APS D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A> ]633;B
+PS>Stop-Transcript
+
+Write-Host "`n========== TRANSCRIPT FILE CHECK =========="
+
+Get-Item .\evidence\final-verification-transcript.txt |
+    Select-Object FullName, Length, LastWriteTime
+
+Write-Host "`n========== TRANSCRIPT END CHECK =========="
+
+Get-Content .\evidence\final-verification-transcript.txt -Tail 15
+**********************
+Windows PowerShell transcript end
+End time: 20261106131604
+**********************

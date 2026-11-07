@@ -1,0 +1,96 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261106134600
+Username: CHARANYA_A\cherr
+RunAs User: CHARANYA_A\cherr
+Configuration Name: 
+Machine: CHARANYA_A (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\cherr\AppData\Local\Programs\Microsoft VS Code\6bab64e2d1\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 31280
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+
+========== BACKEND JAVASCRIPT SYNTAX ==========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BACKEND JAVASCRIPT SYNTAX : PASS (exit code 0)
+
+========== BACKEND UNIT AND API TESTS ==========
+
+BACKEND UNIT AND API TESTS : PASS (exit code 0)
+
+========== FRONTEND TESTS ==========
+
+FRONTEND TESTS : PASS (exit code 0)
+
+========== FRONTEND LINT ==========
+
+FRONTEND LINT : PASS (exit code 0)
+
+========== BACKEND LINT ==========
+
+BACKEND LINT : PASS (exit code 0)
+
+========== FRONTEND PRODUCTION BUILD ==========
+
+FRONTEND PRODUCTION BUILD : PASS (exit code 0)
+
+========== BACKEND DEPENDENCY AUDIT ==========
+
+BACKEND DEPENDENCY AUDIT : PASS (exit code 0)
+
+========== FRONTEND DEPENDENCY AUDIT ==========
+
+FRONTEND DEPENDENCY AUDIT : PASS (exit code 0)
+
+========== SEMGREP SAST ==========
+
+SEMGREP SAST : PASS (exit code 0)
+
+========== OPENAPI CONTRACT VALIDATION ==========
+
+OPENAPI CONTRACT VALIDATION : PASS (exit code 0)
+
+========== HARNESS SUMMARY ==========
+
+Gate                        Status ExitC
+                                     ode
+----                        ------ -----
+BACKEND JAVASCRIPT SYNTAX   PASS       0
+BACKEND UNIT AND API TESTS  PASS       0
+FRONTEND TESTS              PASS       0
+FRONTEND LINT               PASS       0
+BACKEND LINT                PASS       0
+FRONTEND PRODUCTION BUILD   PASS       0
+BACKEND DEPENDENCY AUDIT    PASS       0
+FRONTEND DEPENDENCY AUDIT   PASS       0
+SEMGREP SAST                PASS       0
+OPENAPI CONTRACT VALIDATION PASS       0
+
+
+Passed gates: 10
+Failed gates: 0
+Harness transcript: D:\BITS\1st sem\AI-SDLC\Assignment1\Part-1A\.harness\harness-run-20261106-134600.txt
+**********************
+Windows PowerShell transcript end
+End time: 20261106134621
+**********************

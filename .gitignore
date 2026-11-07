@@ -1,22 +1,28 @@
-﻿# Dependencies
 node_modules/
-**/node_modules/
-
-# Build outputs
 dist/
 build/
 coverage/
-
-# Environment variables and secrets
-.env
-.env.*
-!.env.example
-
-# Logs
+.env*
 *.log
-npm-debug.log*
-
-# Operating system and editor files
 .DS_Store
 Thumbs.db
-.vscode/
+
+# Nested dependencies and generated output
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+
+# Local Node.js installation files (not part of the assignment)
+/node.exe
+/node-v24.22.2-x64.msi
+/nodevars.bat
+/corepack
+/corepack.cmd
+/npm
+/npm.cmd
+/npm.ps1
+/npx
+/npx.cmd
+/npx.ps1
+/install_tools.bat
