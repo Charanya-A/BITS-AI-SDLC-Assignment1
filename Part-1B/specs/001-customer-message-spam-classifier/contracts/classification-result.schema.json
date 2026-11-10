@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "classification-result.schema.json",
+  "title": "Classification Result",
+  "description": "Successful classification for a single valid English-language customer message.",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": ["SPAM", "HAM", "REVIEW"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": ["category", "confidence"],
+  "additionalProperties": false
+}
