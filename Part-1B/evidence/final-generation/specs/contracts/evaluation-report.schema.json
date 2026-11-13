@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evaluation-report.schema.json",
+  "title": "Spam Classifier Evaluation Report",
+  "description": "Independent structural, invariant, and classification-quality evaluation outcomes. All classification metrics (SPAM/HAM precision, recall, F1, macro-F1, REVIEW count, and REVIEW rate) MUST use only cases whose case_group is synthetic_held_out. Synthetic-controlled and validation-only cases MUST NOT contribute. total_valid_evaluation_case_count counts only valid synthetic_held_out cases.",
+  "type": "object",
+  "properties": {
+    "structural_validation_pass": {
+      "type": "boolean"
+    },
+    "invariant_validation_pass": {
+      "type": "boolean"
+    },
+    "evaluation_dataset_valid": {
+      "type": "boolean",
+      "description": "True only when the frozen dataset contains at least 15 valid synthetic_held_out cases, including at least five SPAM and five HAM cases; required normal, boundary, ambiguous, and adversarial scenario coverage across synthetic_held_out and synthetic_controlled groups; unique case_id values; and a non-empty requirement_refs array for every case, with every entry referencing an existing FR or SC ID. Valid field combinations are mandatory: synthetic_held_out and synthetic_controlled cases MUST use one of normal, boundary, ambiguous, or adversarial; contain a non-empty English message; have exactly one SPAM or HAM expected_label; and have null expected_error. validation_only cases MUST use missing or malformed; have null expected_label; and have a non-empty expected_error. A missing case MUST have no message value, while a malformed case MUST contain a value that violates the valid-message input contract. No other combination of case_group, scenario, message, expected_label, and expected_error is valid. All case_group and scenario values must be from their allowed sets. The manifest MUST contain at least one separate missing validation_only case and at least one separate malformed validation_only case. Missing and malformed validation_only cases must be separate from classification-quality cases. Synthetic held-out messages must be isolated from training and every model or preprocessing fitting step. Synthetic-controlled and validation_only cases do not count toward the 15-case minimum or classification metrics."
+    },
+    "classification_quality_pass": {
+      "type": "boolean"
+    },
+    "overall_pass": {
+      "type": "boolean",
+      "description": "True only when structural validation, invariant validation, dataset validity, and classification-quality evaluation all pass."
+    },
+    "failure_evidence": {
+      "type": "array",
+      "description": "Non-sensitive structured failures from independently executed evaluation stages.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "structural_validation",
+              "invariant_validation",
+              "classification_quality",
+              "runner"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "stage",
+          "code",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "spam_precision": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "spam_recall": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "spam_f1": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ham_precision": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ham_recall": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ham_f1": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "macro_f1": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "review_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "review_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "REVIEW count among synthetic_held_out cases divided by total_valid_evaluation_case_count when the denominator is greater than zero; 0 when the denominator is zero. Synthetic_controlled and validation_only cases are excluded."
+    },
+    "total_valid_evaluation_case_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of valid cases with case_group synthetic_held_out included in classification metrics. Synthetic_controlled and validation_only cases are excluded. At least 15 synthetic_held_out cases are required for evaluation_dataset_valid to be true; this count may be zero in an invalid report."
+    },
+    "human_decision": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ACCEPT",
+        "REJECT",
+        null
+      ]
+    }
+  },
+  "required": [
+    "structural_validation_pass",
+    "invariant_validation_pass",
+    "evaluation_dataset_valid",
+    "classification_quality_pass",
+    "overall_pass",
+    "failure_evidence",
+    "spam_precision",
+    "spam_recall",
+    "spam_f1",
+    "ham_precision",
+    "ham_recall",
+    "ham_f1",
+    "macro_f1",
+    "review_count",
+    "review_rate",
+    "total_valid_evaluation_case_count",
+    "human_decision"
+  ],
+  "additionalProperties": false
+}

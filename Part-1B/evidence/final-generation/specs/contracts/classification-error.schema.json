@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "classification-error.schema.json",
+  "title": "Classification Error",
+  "description": "Safe error response for rejected input or a processing failure.",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["error", "message"],
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local secrets and environment
+.env
+.env.*
+
+# Local model artifacts
+models/
+*.joblib
+*.pkl
+
+# Streamlit
+.streamlit/secrets.toml

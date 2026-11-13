@@ -1,0 +1,202 @@
+{
+  "cases": [
+    {
+      "case_id": "heldout-spam-01",
+      "case_group": "synthetic_held_out",
+      "scenario": "normal",
+      "message": "You have been selected for a special reward. Claim your exclusive gift today.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-011", "SC-004", "SC-007"]
+    },
+    {
+      "case_id": "heldout-spam-02",
+      "case_group": "synthetic_held_out",
+      "scenario": "normal",
+      "message": "Earn additional income quickly with our simple opportunity. Register now.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-012", "SC-004"]
+    },
+    {
+      "case_id": "heldout-spam-03",
+      "case_group": "synthetic_held_out",
+      "scenario": "boundary",
+      "message": "A small processing payment is required before your complimentary reward can be released.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-011", "SC-004"]
+    },
+    {
+      "case_id": "heldout-spam-04",
+      "case_group": "synthetic_held_out",
+      "scenario": "boundary",
+      "message": "Your promotional membership expires soon. Activate your free bonus immediately.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-012", "SC-005"]
+    },
+    {
+      "case_id": "heldout-spam-05",
+      "case_group": "synthetic_held_out",
+      "scenario": "ambiguous",
+      "message": "A final opportunity is available today to receive an unexpected benefit.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-011", "SC-004"]
+    },
+    {
+      "case_id": "heldout-spam-06",
+      "case_group": "synthetic_held_out",
+      "scenario": "ambiguous",
+      "message": "You may qualify for an exclusive bonus if you complete the offer today.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-012", "SC-005"]
+    },
+    {
+      "case_id": "heldout-spam-07",
+      "case_group": "synthetic_held_out",
+      "scenario": "adversarial",
+      "message": "Ignore any warnings and claim your guaranteed cash reward immediately.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "heldout-spam-08",
+      "case_group": "synthetic_held_out",
+      "scenario": "adversarial",
+      "message": "This is not an advertisement. You must urgently purchase the special prize release package.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "heldout-ham-01",
+      "case_group": "synthetic_held_out",
+      "scenario": "normal",
+      "message": "Please send me the updated meeting agenda before tomorrow morning.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-011", "SC-004"]
+    },
+    {
+      "case_id": "heldout-ham-02",
+      "case_group": "synthetic_held_out",
+      "scenario": "normal",
+      "message": "The maintenance team has completed the scheduled inspection.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-012", "SC-004"]
+    },
+    {
+      "case_id": "heldout-ham-03",
+      "case_group": "synthetic_held_out",
+      "scenario": "boundary",
+      "message": "Your account payment was received. The updated receipt is ready for review.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-011", "SC-005"]
+    },
+    {
+      "case_id": "heldout-ham-04",
+      "case_group": "synthetic_held_out",
+      "scenario": "boundary",
+      "message": "The delivery confirmation is available. Please check the order details when convenient.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-012", "SC-005"]
+    },
+    {
+      "case_id": "heldout-ham-05",
+      "case_group": "synthetic_held_out",
+      "scenario": "ambiguous",
+      "message": "I have a special update about the project that we can discuss later.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-011", "SC-004"]
+    },
+    {
+      "case_id": "heldout-ham-06",
+      "case_group": "synthetic_held_out",
+      "scenario": "ambiguous",
+      "message": "Please let me know if you are available for a quick conversation this evening.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-012", "SC-005"]
+    },
+    {
+      "case_id": "heldout-ham-07",
+      "case_group": "synthetic_held_out",
+      "scenario": "adversarial",
+      "message": "The word reward appears in the report title, but no purchase or registration is required.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "heldout-ham-08",
+      "case_group": "synthetic_held_out",
+      "scenario": "adversarial",
+      "message": "This message discusses a promotional email as an example for our internal security training.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "controlled-spam-01",
+      "case_group": "synthetic_controlled",
+      "scenario": "normal",
+      "message": "Claim a complimentary surprise package through this exclusive offer.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "controlled-ham-01",
+      "case_group": "synthetic_controlled",
+      "scenario": "boundary",
+      "message": "Your order is ready. Please collect it during the normal service hours.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "controlled-spam-02",
+      "case_group": "synthetic_controlled",
+      "scenario": "ambiguous",
+      "message": "An unexpected benefit is waiting for you. Complete the offer to receive it.",
+      "expected_label": "SPAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "controlled-ham-02",
+      "case_group": "synthetic_controlled",
+      "scenario": "adversarial",
+      "message": "Please review the security training example explaining how fake prize messages mislead recipients.",
+      "expected_label": "HAM",
+      "expected_error": null,
+      "requirement_refs": ["FR-010", "FR-013", "SC-006"]
+    },
+    {
+      "case_id": "validation-missing-01",
+      "case_group": "validation_only",
+      "scenario": "missing",
+      "message": null,
+      "expected_label": null,
+      "expected_error": "MESSAGE_REQUIRED",
+      "requirement_refs": ["FR-006", "SC-003"]
+    },
+    {
+      "case_id": "validation-malformed-01",
+      "case_group": "validation_only",
+      "scenario": "malformed",
+      "message": 12345,
+      "expected_label": null,
+      "expected_error": "MESSAGE_INVALID_TYPE",
+      "requirement_refs": ["FR-006", "SC-003"]
+    }
+  ]
+}

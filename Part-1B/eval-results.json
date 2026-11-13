@@ -1,0 +1,21 @@
+﻿{
+    "structural_validation_pass":  true,
+    "invariant_validation_pass":  true,
+    "evaluation_dataset_valid":  true,
+    "classification_quality_pass":  true,
+    "overall_pass":  true,
+    "failure_evidence":  [
+
+                         ],
+    "spam_precision":  1.0,
+    "spam_recall":  1.0,
+    "spam_f1":  1.0,
+    "ham_precision":  1.0,
+    "ham_recall":  1.0,
+    "ham_f1":  1.0,
+    "macro_f1":  1.0,
+    "review_count":  0,
+    "review_rate":  0.0,
+    "total_valid_evaluation_case_count":  16,
+    "human_decision":  "ACCEPT"
+}
