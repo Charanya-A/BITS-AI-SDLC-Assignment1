@@ -88,7 +88,9 @@ These results apply only to the small, self-authored synthetic evaluation set. T
 
 ## Human review
 
-An automated PASS is not a human acceptance decision. The final `human_decision` remains null until the project is reviewed and an explicit ACCEPT or REJECT decision is recorded.
+The final automated evaluation report retains `human_decision: null`. A separate human review recorded ACCEPT on 13 November 2026, after reviewing the automated tests, harness results, manual UI checks, privacy review, and documented limitations.
+
+Human acceptance does not establish real-world classification performance or satisfy the non-deterministic AI requirement.
 
 ## Project limitations
 
